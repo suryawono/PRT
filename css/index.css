@@ -7,11 +7,32 @@ and open the template in the editor.
     Created on : Jan 7, 2015, 12:57:33 AM
     Author     : Surya Wono
 */
-
 .wrapper{
-    
+    padding:6%;
 }
 
-.content{
-    margin:5%;
+.login-form {
+  text-align: center;
+  width: 80%;
+  margin: 60px auto 0;
+}
+
+input[type=email], input[type=password] {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  outline: none;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.login-button {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.forgot-password {
+  display: block;
+  margin: 8px auto 0 auto;
+  font-size: 14px;
 }
