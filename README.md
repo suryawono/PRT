@@ -10,6 +10,6 @@ Gede Karya
 
 Teknologi
 ----
-*Phonegap
-*Onsen-ui+Angular.js
-*jQuery
+* Phonegap
+* Onsen-ui+Angular.js
+* jQuery
