@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 
-function login(){
-    
+function login() {
+    loginSuccess();
+}
+
+function loginSuccess() {
+
 }

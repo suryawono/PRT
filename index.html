@@ -20,7 +20,7 @@
         <script>
             var module = angular.module('app', ['onsen']);
             ons.ready(function () {
-                appPRT.pushPage("login.html");
+                app.slidingMenu.setSwipeable(false);
             })
         </script>
 
@@ -88,16 +88,11 @@
 
     <body>    
 
-    <ons-navigator var="appPRT">
-
-    </ons-navigator>
-
-    <ons-template id="slidingMenu.html">
-        <ons-sliding-menu
-            menu-page="menu.html" main-page="login.html" side="left"
-            var="menu" type="reveal" max-slide-distance="260px" swipable="true">
-        </ons-sliding-menu>
-    </ons-template>
+    <ons-sliding-menu
+        var="app.slidingMenu"
+        menu-page="menu.html" main-page="login.html" side="left"
+        var="menu" type="reveal" max-slide-distance="260px" swipable="true">
+    </ons-sliding-menu>
 
     <ons-template id="login.html">
         <ons-page>
@@ -111,7 +106,7 @@
                 <input type="email" class="text-input--underbar" placeholder="Email" id="email">
                 <input type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password">
                 <br><br>
-                <ons-button modifier="large" class="login-button" onclick="">Log In</ons-button>
+                <ons-button modifier="large" class="login-button" onclick="login()">Log In</ons-button>
                 <br><br>
                 <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
                 <ons-button modifier="quiet" class="forgot-password">Daftar</ons-button>
