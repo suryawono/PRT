@@ -35,6 +35,5 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function () {
         service_url_local_deploy="http://192.168.137.1/";
-        alert("Ready!");
     },
 };
