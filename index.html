@@ -7,7 +7,8 @@
         <title>My App</title>  
 
         <link rel="stylesheet" href="lib/onsen/css/onsenui.css">  
-        <link rel="stylesheet" href="styles/onsen-css-components-blue-basic-theme.css">  
+        <!--<link rel="stylesheet" href="styles/onsen-css-components-blue-basic-theme.css">-->  
+        <link rel="stylesheet" href="styles/onsen-css-components.min.css">  
         <link rel="stylesheet" href="styles/app.css"/>
         <link rel="stylesheet" href="css/index.css"/>
 
@@ -20,7 +21,7 @@
         <script>
             var module = angular.module('app', ['onsen']);
             ons.ready(function () {
-                app.slidingMenu.setSwipeable(false);
+                menu.setSwipeable(false);
             })
         </script>
 
@@ -89,7 +90,6 @@
     <body>    
 
     <ons-sliding-menu
-        var="app.slidingMenu"
         menu-page="menu.html" main-page="login.html" side="left"
         var="menu" type="reveal" max-slide-distance="260px" swipable="true">
     </ons-sliding-menu>
@@ -103,8 +103,12 @@
             </ons-toolbar>
             <div class="login-form">
                 <img src="img/icon-96.png"/>
-                <input type="email" class="text-input--underbar" placeholder="Email" id="email">
-                <input type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password">
+                <section style="padding: 0 8px 8px" class="item">
+                    <input type="email" class="text-input--underbar" placeholder="Email" id="email">
+                </section>
+                <section style="padding: 0 8px 8px" class="item">
+                    <input type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password">
+                </section>
                 <br><br>
                 <ons-button modifier="large" class="login-button" onclick="login()">Log In</ons-button>
                 <br><br>
@@ -122,38 +126,86 @@
             <ons-toolbar modifier="transparent"></ons-toolbar>
 
             <ons-list class="menu-list">
-                <ons-list-item class="menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
+                <ons-list-item class="menu-item" ng-click="menu.setMainPage('dashboard.html', {closeMenu: true})">
+                    <ons-icon icon="fa-star-o"></ons-icon>
+                    Dashboard
+                </ons-list-item>
+
+                <ons-list-item class="menu-item" ng-click="menu.setMainPage('tambah_pemasukan.html', {closeMenu: true})">
                     <ons-icon icon="fa-plus"></ons-icon>
-                    New Post
+                    Tambah Pemasukan
                 </ons-list-item>
 
-                <ons-list-item class="menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-                    <ons-icon icon="fa-bookmark"></ons-icon>
-                    Bookmark
-                </ons-list-item>
-
-                <ons-list-item class="menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
-                    <ons-icon icon="fa-twitter"></ons-icon>
-                    Official Twitter
+                <ons-list-item class="menu-item" ng-click="menu.setMainPage('tambah_pengeluaran.html', {closeMenu: true})">
+                    <ons-icon icon="fa-minus"></ons-icon>
+                    Tambah Pengeluaran
                 </ons-list-item>
             </ons-list>
 
             <br>
 
             <ons-list class="bottom-menu-list">
-                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-                    Settings
-                    <div class="notification menu-notification">3</div>
-                </ons-list-item>
-
-                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
-                    Help
-                </ons-list-item>
-
-                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-                    Send feedback
-                </ons-list-item>
+                <!--                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
+                                    Settings
+                                    <div class="notification menu-notification">3</div>
+                                </ons-list-item>
+                
+                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
+                                    Help
+                                </ons-list-item>
+                
+                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
+                                    Send feedback
+                                </ons-list-item>-->
             </ons-list>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="dashboard.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"></div>
+                <div class="center">Dashboard</div>
+                <div class="right"></div>
+            </ons-toolbar>
+        </ons-page>
+    </ons-template>
+    <ons-template id="tambah_pemasukan.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"></div>
+                <div class="center">Tambah Pemasukan</div>
+                <div class="right"></div>
+            </ons-toolbar>
+            <div class="content">
+
+                <section style="padding: 8px" class="item">
+                    <input type="text" class="text-input--underbar" ng-model="text" placeholder="Jumlah pemasukan" style="display: block; width: 100%">
+                </section>
+
+                <section style="padding: 0 8px 8px" class="item">
+                    <textarea class="textarea textarea--transpanret" ng-model="text2" placeholder="Deskripsi" style="width: 100%; height: 100px;"></textarea>
+                </section>
+
+                <section style="padding: 0 8px 8px" class="item">
+                    <input type="date" class="text-input--underbar" ng-model="date" ></input>
+                </section>
+
+                <section style="padding: 0 8px 8px" class="item">
+                    <br><br>
+                    <ons-button modifier="medium" ng-click="tambahTransaksi('pemasukan')">Simpan</ons-button>
+                </section>
+
+            </div>
+        </ons-page>
+    </ons-template>
+    <ons-template id="tambah_pengeluaran.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"></div>
+                <div class="center">Tambah Pengeluaran</div>
+                <div class="right"></div>
+            </ons-toolbar>
         </ons-page>
     </ons-template>
 

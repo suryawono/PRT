@@ -9,5 +9,14 @@ function login() {
 }
 
 function loginSuccess() {
+    setMainPage("dashboard.html");
+    menu.setSwipeable(true);
+}
 
+function setMainPage(e){
+    menu.setMainPage(e, {closeMenu: true});
+}
+
+function tambahTransaksi(jenis){
+    alert(jenis);
 }
