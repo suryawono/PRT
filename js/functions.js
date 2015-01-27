@@ -20,3 +20,9 @@ function setMainPage(e){
 function tambahTransaksi(jenis){
     alert(jenis);
 }
+
+function logout(){
+    alert("logout");
+    setMainPage("login.html");
+    menu.setSwipeable(false);
+}
