@@ -10,7 +10,6 @@ function login() {
     var data = $("#login").serialize();
     login_button.startSpin();
     login_button.setDisabled(true);
-    console.log(data);
     $.ajax({
         type: "POST",
         url: service_url + "anggotas/login.json",
@@ -18,7 +17,7 @@ function login() {
         dataType: "json",
         success: function (data) {
             if (data.response.status == 202) {
-                loginSuccess();
+                loginSuccess(data.response.data.email);
             } else if (data.response.status == 402) {
                 alert("Email/kata sandi salah");
                 login_button.stopSpin();
@@ -38,7 +37,8 @@ function login() {
 
 }
 
-function loginSuccess() {
+function loginSuccess(email) {
+    localStorage['credential'] = {"email": email};
     login_button.stopSpin();
     login_button.setDisabled(false);
     setMainPage("dashboard.html");
@@ -50,6 +50,7 @@ function setMainPage(e) {
 }
 
 function logout() {
+    localStorage.clear();
     setMainPage("login.html");
     menu.setSwipeable(false);
 }

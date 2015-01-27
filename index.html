@@ -16,6 +16,7 @@
         <script src="lib/onsen/js/onsenui.min.js"></script>    
 
         <script src="cordova.js"></script>
+        <script src="index.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/functions.js"></script>
         <script src="js/db.js"></script>
@@ -162,6 +163,9 @@
                                                     Help
                                                 </ons-list-item>-->
 
+                <ons-list-item class="bottom-menu-item" onclick="setMainMenu('tambahAnggota.html')">
+                    Tambah anggota
+                </ons-list-item>
                 <ons-list-item class="bottom-menu-item" onclick="logout()">
                     Logout
                 </ons-list-item>
@@ -208,7 +212,11 @@
     <ons-template id="dashboard.html">
         <ons-page>
             <ons-toolbar>
-                <div class="left"></div>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
                 <div class="center">Dashboard</div>
                 <div class="right"></div>
             </ons-toolbar>
@@ -217,7 +225,11 @@
     <ons-template id="tambah_pemasukan.html">
         <ons-page>
             <ons-toolbar>
-                <div class="left"></div>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
                 <div class="center">Tambah Pemasukan</div>
                 <div class="right"></div>
             </ons-toolbar>
@@ -242,7 +254,7 @@
                     </section>
 
                     <section class="item">
-                        <input name="tanggal" type="date" class="text-input--underbar" ></input>
+                        <input name="tanggal" type="date" class="text-input--underbar" />
                     </section>
 
                     <section class="item">
@@ -257,7 +269,11 @@
     <ons-template id="tambah_pengeluaran.html">
         <ons-page>
             <ons-toolbar>
-                <div class="left"></div>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
                 <div class="center">Tambah Pengeluaran</div>
                 <div class="right"></div>
             </ons-toolbar>
@@ -284,7 +300,7 @@
                     </section>
 
                     <section class="item">
-                        <input name="tanggal" type="date" class="text-input--underbar" ></input>
+                        <input name="tanggal" type="date" class="text-input--underbar" />
                     </section>
 
                     <section class="item">
@@ -292,14 +308,33 @@
                         <ons-button modifier="medium" onclick="simpan('pengeluaran')">Simpan</ons-button>
                     </section>
             </div>
-            </div>
         </ons-page>
     </ons-template>
 
     <ons-template id="laporan.html">
         <ons-page>
             <ons-toolbar>
-                <div class="left"></div>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Laporan</div>
+                <div class="right"></div>
+            </ons-toolbar>
+            <div>
+
+            </div>
+        </ons-page>
+    </ons-template>
+    <ons-template id="tambahAnggota.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
                 <div class="center">Laporan</div>
                 <div class="right"></div>
             </ons-toolbar>
