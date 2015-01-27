@@ -24,11 +24,12 @@
 
         <script>
             var module = angular.module('app', ['onsen']);
+
             ons.ready(function () {
                 menu.setSwipeable(false);
             })
         </script>
-
+        <script src="js/app-angular.js"></script>
         <style>
             .page--menu-page__background {
                 background-color: #333;
@@ -100,17 +101,18 @@
 
     <ons-template id="login.html">
         <ons-page>
-            <form id="login">
+            <form id="login" ng-controller="logincontroller" ng-submit="doLogin()">
                 <div class="login-form">
                     <img src="img/icon-96.png"/>
                     <section class="item">
-                        <input name="email" type="email" class="text-input--underbar" placeholder="Email" id="email">
+                        <input name="email" type="email" class="text-input--underbar" placeholder="Email" id="email" ng-model="name">
                     </section>
                     <section class="item">
-                        <input name="password" type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password">
+                        <input name="password" type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password" ng-model="email">
                     </section>
                     <br><br>
                     <ons-button var="login_button" modifier="large" class="login-button" onclick="login()">Log In</ons-button>
+                    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                     <br><br>
                     <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
                     <ons-button modifier="quiet" class="forgot-password" onclick="setMainPage('register.html')">Daftar</ons-button>
@@ -174,7 +176,7 @@
                 <div class="right"><ons-back-button onclick="setMainPage('login.html')">Back</ons-back-button></div>
             </ons-toolbar>
             <div class="content">
-                <form id="register">
+                <form id="register" ng-submit="doRegister()" ng-controller="registercontroller">
                     <section class="item">
                         <input name="email" type="text" class="text-input--underbar" placeholder="Email">
                     </section>
@@ -198,7 +200,7 @@
                         <br><br>
                         <ons-button var="register_button" modifier="medium" onclick="register()">Daftar</ons-button>
                     </section>
-
+                    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                 </form>
             </div>
         </ons-page>
