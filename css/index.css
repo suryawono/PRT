@@ -23,13 +23,9 @@ and open the template in the editor.
     margin:0 auto;
 }
 
-input[type=email], input[type=password] {
+input{
     display: block;
     width: 100%;
-    margin: 0 auto;
-    outline: none;
-    padding-top: 24px;
-    padding-bottom: 24px;
 }
 
 .login-button {
@@ -45,4 +41,5 @@ input[type=email], input[type=password] {
 
 .item{
     margin:5px 0;
+    padding:8px;
 }

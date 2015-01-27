@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="mobile-web-app-capable" content="yes">
-        <title>My App</title>  
+        <title>Pembukuan Rumah Tangga</title>  
 
         <link rel="stylesheet" href="lib/onsen/css/onsenui.css">  
         <!--<link rel="stylesheet" href="styles/onsen-css-components-blue-basic-theme.css">-->  
@@ -16,7 +16,11 @@
         <script src="lib/onsen/js/onsenui.min.js"></script>    
 
         <script src="cordova.js"></script>
+        <script src="js/jquery.min.js"></script>
         <script src="js/functions.js"></script>
+        <script src="js/db.js"></script>
+        <script src="js/model.js"></script>
+        <script src="js/controller.js"></script>
 
         <script>
             var module = angular.module('app', ['onsen']);
@@ -96,25 +100,22 @@
 
     <ons-template id="login.html">
         <ons-page>
-            <ons-toolbar>
-                <div class="left"></div>
-                <div class="center">Log In</div>
-                <div class="right"></div>
-            </ons-toolbar>
-            <div class="login-form">
-                <img src="img/icon-96.png"/>
-                <section style="padding: 0 8px 8px" class="item">
-                    <input type="email" class="text-input--underbar" placeholder="Email" id="email">
-                </section>
-                <section style="padding: 0 8px 8px" class="item">
-                    <input type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password">
-                </section>
-                <br><br>
-                <ons-button modifier="large" class="login-button" onclick="login()">Log In</ons-button>
-                <br><br>
-                <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
-                <ons-button modifier="quiet" class="forgot-password">Daftar</ons-button>
-            </div>
+            <form id="login">
+                <div class="login-form">
+                    <img src="img/icon-96.png"/>
+                    <section class="item">
+                        <input name="email" type="email" class="text-input--underbar" placeholder="Email" id="email">
+                    </section>
+                    <section class="item">
+                        <input name="password" type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password">
+                    </section>
+                    <br><br>
+                    <ons-button var="login_button" modifier="large" class="login-button" onclick="login()">Log In</ons-button>
+                    <br><br>
+                    <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
+                    <ons-button modifier="quiet" class="forgot-password" onclick="setMainPage('register.html')">Daftar</ons-button>
+                </div>
+            </form>
             <ons-modal var="modal_loading_login">
                 <ons-icon icon="ion-loading-c" spin="true" ></ons-icon>
             </ons-modal>
@@ -127,7 +128,7 @@
 
             <ons-list class="menu-list">
                 <ons-list-item class="menu-item" ng-click="menu.setMainPage('dashboard.html', {closeMenu: true})">
-                    <ons-icon icon="fa-star-o"></ons-icon>
+                    <ons-icon icon="fa-home"></ons-icon>
                     Dashboard
                 </ons-list-item>
 
@@ -140,27 +141,68 @@
                     <ons-icon icon="fa-minus"></ons-icon>
                     Tambah Pengeluaran
                 </ons-list-item>
+
+                <ons-list-item class="menu-item" ng-click="menu.setMainPage('laporan.html', {closeMenu: true})">
+                    <ons-icon icon="fa-bar-chart"></ons-icon>
+                    Laporan
+                </ons-list-item>
             </ons-list>
 
             <br>
 
             <ons-list class="bottom-menu-list">
-<!--                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-                                    Settings
-                                    <div class="notification menu-notification">3</div>
-                                </ons-list-item>
-                
-                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
-                                    Help
-                                </ons-list-item>-->
-                
-                                <ons-list-item class="bottom-menu-item" ng-click="logout()">
-                                    Logout
-                                </ons-list-item>
+                <!--                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
+                                                    Settings
+                                                    <div class="notification menu-notification">3</div>
+                                                </ons-list-item>
+                                
+                                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
+                                                    Help
+                                                </ons-list-item>-->
+
+                <ons-list-item class="bottom-menu-item" onclick="logout()">
+                    Logout
+                </ons-list-item>
             </ons-list>
         </ons-page>
     </ons-template>
+    <ons-template id="register.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left"></div>
+                <div class="center">Pendaftaran</div>
+                <div class="right"><ons-back-button onclick="setMainPage('login.html')">Back</ons-back-button></div>
+            </ons-toolbar>
+            <div class="content">
+                <form id="register">
+                    <section class="item">
+                        <input name="email" type="text" class="text-input--underbar" placeholder="Email">
+                    </section>
+                    <section class="item">
+                        <input name="password" type="password" class="text-input--underbar" placeholder="Kata sandi">
+                    </section>
+                    <section class="item">
+                        <input name="repeat_password" type="password" class="text-input--underbar" placeholder="Ulangi kata sandi">
+                    </section>
+                    <section class="item">
+                        <input name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama Depan">
+                    </section>
+                    <section class="item">
+                        <input name="nama_belakang" type="text" class="text-input--underbar"  placeholder="Nama Belakang">
+                    </section>
+                    <section class="item">
+                        <input name="alamat" type="text" class="text-input--underbar"  placeholder="Alamat">
+                    </section>
 
+                    <section class="item">
+                        <br><br>
+                        <ons-button var="register_button" modifier="medium" onclick="register()">Daftar</ons-button>
+                    </section>
+
+                </form>
+            </div>
+        </ons-page>
+    </ons-template>
     <ons-template id="dashboard.html">
         <ons-page>
             <ons-toolbar>
@@ -178,24 +220,35 @@
                 <div class="right"></div>
             </ons-toolbar>
             <div class="content">
+                <form id="pemasukan">
+                    <section class="item">
+                        <input name="jumlah" type="text" class="text-input--underbar" placeholder="Jumlah pemasukan">
+                    </section>
 
-                <section style="padding: 8px" class="item">
-                    <input type="text" class="text-input--underbar" ng-model="text" placeholder="Jumlah pemasukan" style="display: block; width: 100%">
-                </section>
+                    <section class="item">
+                        <div>
+                            <select name="kategori" class="text-input--underbar">
+                                <option value="empty">-- Pilih Kategori --</option>
+                                <option>Gaji</option>
+                                <option>dll</option>
+                            </select>
+                        </div>
+                    </section>
 
-                <section style="padding: 0 8px 8px" class="item">
-                    <textarea class="textarea textarea--transpanret" ng-model="text2" placeholder="Deskripsi" style="width: 100%; height: 100px;"></textarea>
-                </section>
+                    <section class="item">
+                        <textarea name="deskripsi" class="textarea textarea--transpanret" placeholder="Deskripsi"></textarea>
+                    </section>
 
-                <section style="padding: 0 8px 8px" class="item">
-                    <input type="date" class="text-input--underbar" ng-model="date" ></input>
-                </section>
+                    <section class="item">
+                        <input name="tanggal" type="date" class="text-input--underbar" ></input>
+                    </section>
 
-                <section style="padding: 0 8px 8px" class="item">
-                    <br><br>
-                    <ons-button modifier="medium" ng-click="tambahTransaksi('pemasukan')">Simpan</ons-button>
-                </section>
+                    <section class="item">
+                        <br><br>
+                        <ons-button modifier="medium" onclick="simpan('pemasukan')">Simpan</ons-button>
+                    </section>
 
+                </form>
             </div>
         </ons-page>
     </ons-template>
@@ -206,51 +259,51 @@
                 <div class="center">Tambah Pengeluaran</div>
                 <div class="right"></div>
             </ons-toolbar>
+            <div class="content">
+                <form id="pengeluaran">
+                    <section class="item">
+                        <input name="jumlah" type="text" class="text-input--underbar" placeholder="Jumlah pengeluaran">
+                    </section>
+
+                    <section class="item">
+                        <div>
+                            <select name="kategori" class="text-input--underbar">
+                                <option value="empty">-- Pilih Kategori --</option>
+                                <option>Makanan</option>
+                                <option>Minuman</option>
+                                <option>Bahan Bakar</option>
+                                <option>dll</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <section class="item">
+                        <textarea name="deskripsi" class="textarea textarea--transpanret" placeholder="Deskripsi"></textarea>
+                    </section>
+
+                    <section class="item">
+                        <input name="tanggal" type="date" class="text-input--underbar" ></input>
+                    </section>
+
+                    <section class="item">
+                        <br><br>
+                        <ons-button modifier="medium" onclick="simpan('pengeluaran')">Simpan</ons-button>
+                    </section>
+            </div>
+            </div>
         </ons-page>
     </ons-template>
 
-    <ons-template id="page1.html">
+    <ons-template id="laporan.html">
         <ons-page>
             <ons-toolbar>
-                <div class="left">
-                    <ons-toolbar-button ng-click="menu.toggle()">
-                        <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-                    </ons-toolbar-button>
-                </div>
-                <div class="center">Page 1</div>
+                <div class="left"></div>
+                <div class="center">Laporan</div>
+                <div class="right"></div>
             </ons-toolbar>
+            <div>
 
-            <ons-row style="margin-top: 100px;">
-                <ons-col align="center">
-                    <ons-button modifier="light" ng-click="menu.toggleMenu()">
-                        Toggle Menu
-                    </ons-button>
-                    <p style="color: #999; font-size: 13px;">Click "Toggle Menu" to close/open menu,<br> You can also swipe the page left/right.</p>
-                </ons-col>
-            </ons-row>
-        </ons-page>
-    </ons-template>
-
-    <ons-template id="page2.html">
-        <ons-page>
-            <ons-toolbar>
-                <div class="left">
-                    <ons-toolbar-button ng-click="menu.toggle()">
-                        <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
-                    </ons-toolbar-button>
-                </div>
-                <div class="center">Page 2</div>
-            </ons-toolbar>
-
-
-            <ons-row style="margin-top: 100px;">
-                <ons-col align="center">
-                    <ons-button modifier="light" ng-click="menu.toggleMenu()">
-                        Toggle Menu
-                    </ons-button>
-                </ons-col>
-            </ons-row>
-
+            </div>
         </ons-page>
     </ons-template>
 
