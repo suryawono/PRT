@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-var service_url = service_url_local_deploy || "http://localhost/prtservice/";
-
 function login() {
     var data = $("#login").serialize();
     login_button.startSpin();
