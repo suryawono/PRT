@@ -177,11 +177,11 @@
         </ons-page>
     </ons-template>
     <ons-template id="register.html">
-        <ons-page>
+        <ons-page on-device-backbutton="setMainPage('login.html')">
             <ons-toolbar>
-                <div class="left"></div>
+                <div class="left"><ons-back-button onclick="setMainPage('login.html')">Back</ons-back-button></div>
                 <div class="center">Pendaftaran</div>
-                <div class="right"><ons-back-button onclick="setMainPage('login.html')">Back</ons-back-button></div>
+                <div class="right"></div>
             </ons-toolbar>
             <div class="content">
                 <form id="register" ng-submit="doRegister()" ng-controller="registercontroller">
@@ -224,6 +224,9 @@
                 <div class="center">Dashboard</div>
                 <div class="right"></div>
             </ons-toolbar>
+            <div>
+                
+            </div>
         </ons-page>
     </ons-template>
     <ons-template id="tambah_pemasukan.html">
