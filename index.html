@@ -174,7 +174,7 @@
                 <div class="center">Pendaftaran</div>
                 <div class="right"></div>
             </ons-toolbar>
-            <div class="content">
+            <ons-scroller class="content-list text-center">
                 <form id="register" ng-submit="doRegister()" ng-controller="registercontroller">
                     <section class="item">
                         <input name="email" type="email" class="text-input--underbar" placeholder="Email">
@@ -201,8 +201,8 @@
                     </section>
                     <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                 </form>
-            </div>
-        </ons-page>
+                </div>
+            </ons-scroller>
     </ons-template>
     <ons-template id="dashboard.html"  >
         <ons-page ng-controller="dashboardcontroller" 
@@ -217,15 +217,10 @@
                 <div class="right"></div>
             </ons-toolbar>
             <ons-scroller class="content-list">
-                <ons-list>
-                    <ons-list-header>Pemasukan</ons-list-header>
-                    <ons-list-item class='text-right'>{{numberService.formatAngka(total_pemasukan)}}</ons-list-item>
-
-                    <ons-list-header>Pengeluaran</ons-list-header>
-                    <ons-list-item class='text-right'>{{numberService.formatAngka(total_pengeluaran)}}</ons-list-item>
-
-                    <ons-list-header>Total</ons-list-header>
-                    <ons-list-item class='text-right' ng-class="getColor(total)">{{numberService.formatAngka(total)}}</ons-list-item>
+                <ons-list class="list">
+                    <ons-list-item class='list__item'><span class="list__right-label">{{numberService.formatAngka(total_pemasukan)}}</span>Pemasukan</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label">{{numberService.formatAngka(total_pengeluaran)}}</span>Pengeluaran</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="getColor(total)">{{numberService.formatAngka(total)}}</span>Total</ons-list-item>
                 </ons-list>
             </ons-scroller>
         </ons-page>
