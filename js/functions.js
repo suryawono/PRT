@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 function login() {
     var data = $("#login").serialize();
     login_button.startSpin();

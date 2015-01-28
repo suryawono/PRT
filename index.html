@@ -158,15 +158,6 @@
             <br>
 
             <ons-list class="bottom-menu-list">
-                <!--                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page2.html', {closeMenu: true})">
-                                                    Settings
-                                                    <div class="notification menu-notification">3</div>
-                                                </ons-list-item>
-                                
-                                                <ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page1.html', {closeMenu: true})">
-                                                    Help
-                                                </ons-list-item>-->
-
                 <ons-list-item class="bottom-menu-item" onclick="setMainPage('tambahAnggota.html')">
                     Tambah anggota
                 </ons-list-item>
@@ -213,8 +204,9 @@
             </div>
         </ons-page>
     </ons-template>
-    <ons-template id="dashboard.html">
-        <ons-page>
+    <ons-template id="dashboard.html"  >
+        <ons-page ng-controller="dashboardcontroller" 
+                  ng-init="init()">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
@@ -224,9 +216,18 @@
                 <div class="center">Dashboard</div>
                 <div class="right"></div>
             </ons-toolbar>
-            <div>
-                
-            </div>
+            <ons-scroller class="content-list">
+                <ons-list>
+                    <ons-list-header>Pemasukan</ons-list-header>
+                    <ons-list-item class='text-right'>{{numberService.formatAngka(total_pemasukan)}}</ons-list-item>
+
+                    <ons-list-header>Pengeluaran</ons-list-header>
+                    <ons-list-item class='text-right'>{{numberService.formatAngka(total_pengeluaran)}}</ons-list-item>
+
+                    <ons-list-header>Total</ons-list-header>
+                    <ons-list-item class='text-right' ng-class="getColor(total)">{{numberService.formatAngka(total)}}</ons-list-item>
+                </ons-list>
+            </ons-scroller>
         </ons-page>
     </ons-template>
     <ons-template id="tambah_pemasukan.html">
@@ -240,7 +241,7 @@
                 <div class="center">Tambah Pemasukan</div>
                 <div class="right"></div>
             </ons-toolbar>
-            <div class="content">
+            <ons-scroller class="content-list text-center">
                 <form id="pemasukan">
                     <section class="item">
                         <input name="jumlah" type="text" class="text-input--underbar" placeholder="Jumlah pemasukan">
@@ -270,7 +271,7 @@
                     </section>
 
                 </form>
-            </div>
+            </ons-scroller>
         </ons-page>
     </ons-template>
     <ons-template id="tambah_pengeluaran.html">
@@ -284,7 +285,7 @@
                 <div class="center">Tambah Pengeluaran</div>
                 <div class="right"></div>
             </ons-toolbar>
-            <div class="content">
+            <ons-scroller class="content-list text-center">
                 <form id="pengeluaran">
                     <section class="item">
                         <input name="jumlah" type="text" class="text-input--underbar" placeholder="Jumlah pengeluaran">
@@ -314,7 +315,8 @@
                         <br><br>
                         <ons-button modifier="medium" onclick="simpan('pengeluaran')">Simpan</ons-button>
                     </section>
-            </div>
+                </form>
+            </ons-scroller>
         </ons-page>
     </ons-template>
 
@@ -336,19 +338,37 @@
     </ons-template>
 
     <ons-template id="tambahAnggota.html">
-        <ons-page>
+        <ons-page ng-controller="tambahanggotacontroller">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
                         <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
                     </ons-toolbar-button>
                 </div>
-                <div class="center">Laporan</div>
+                <div class="center">Tambah Anggota</div>
                 <div class="right"></div>
             </ons-toolbar>
-            <div>
-
-            </div>
+            <ons-scroller class='content-list text-center' >
+                <section class="item">
+                    <input name="email" type="text" class="text-input--underbar" placeholder="Email"/>
+                </section>
+                <section class="item">
+                    <input name="password" type="text" class="text-input--underbar" placeholder="Kata sandi"/>
+                </section>
+                <section class="item">
+                    <input name="repeat_password" type="text" class="text-input--underbar" placeholder="Ulangi kata sandi"/>
+                </section>
+                <section class="item">
+                    <input name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama depan"/>
+                </section>
+                <section class="item">
+                    <input name="nama_belakang" type="text" class="text-input--underbar" placeholder="Nama belakang"/>
+                </section>
+                <section class="item">
+                    <input name="alamat" type="text" class="text-input--underbar" placeholder="Alamat"/>
+                </section>
+                <input name="parent_email" type="hidden" ng-model="parent_email"/>
+            </ons-scroller>
         </ons-page>
     </ons-template>
 

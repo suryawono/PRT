@@ -43,3 +43,25 @@ input,textarea,select{
     margin:5px 0;
     padding:8px;
 }
+
+.content-list{
+    margin-top:10%;
+}
+
+.text-right{
+    text-align: right;
+}
+.text-left{
+    text-align: left;
+}
+.text-center{
+    text-align: center;
+}
+
+.green{
+    color:green;
+}
+
+.red{
+    color:red;
+}

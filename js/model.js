@@ -79,6 +79,7 @@ Pembukuan.prototype.query = function (q, fn) {
 
 Pembukuan.prototype.viewTotal = function (callback) {
     this.query("select sum(case when jenis='pemasukan' then jumlah end) as totalPemasukan,sum(case when jenis='pengeluaran' then jumlah end) as totalPengeluaran from Buku", function (results) {
+        result=results;
         totalPemasukan = results.rows.item(0).totalPemasukan || 0;
         totalPengeluaran = results.rows.item(0).totalPengeluaran || 0;
         if (typeof callback == "function") {
