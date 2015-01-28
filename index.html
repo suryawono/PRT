@@ -117,7 +117,7 @@
                     </section>
                     <br><br>
                     <ons-button var="login_button" modifier="large" class="login-button" onclick="login()">Log In</ons-button>
-                    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+                    <input type="submit" style="display:none"/>
                     <br><br>
                     <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
                     <ons-button modifier="quiet" class="forgot-password" onclick="setMainPage('register.html')">Daftar</ons-button>
@@ -349,25 +349,32 @@
                 <div class="right"></div>
             </ons-toolbar>
             <ons-scroller class='content-list text-center' >
-                <section class="item">
-                    <input name="email" type="text" class="text-input--underbar" placeholder="Email"/>
-                </section>
-                <section class="item">
-                    <input name="password" type="text" class="text-input--underbar" placeholder="Kata sandi"/>
-                </section>
-                <section class="item">
-                    <input name="repeat_password" type="text" class="text-input--underbar" placeholder="Ulangi kata sandi"/>
-                </section>
-                <section class="item">
-                    <input name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama depan"/>
-                </section>
-                <section class="item">
-                    <input name="nama_belakang" type="text" class="text-input--underbar" placeholder="Nama belakang"/>
-                </section>
-                <section class="item">
-                    <input name="alamat" type="text" class="text-input--underbar" placeholder="Alamat"/>
-                </section>
-                <input name="parent_email" type="hidden" ng-model="parent_email"/>
+                <form ng-submit="kirim()">
+                    <section class="item">
+                        <input ng-model="formData.email" name="email" type="text" class="text-input--underbar" placeholder="Email"/>
+                    </section>
+                    <section class="item">
+                        <input ng-model="formData.password" name="password" type="password" class="text-input--underbar" placeholder="Kata sandi"/>
+                    </section>
+                    <section class="item">
+                        <input ng-model="formData.repeat_password" name="repeat_password" type="password" class="text-input--underbar" placeholder="Ulangi kata sandi"/>
+                    </section>
+                    <section class="item">
+                        <input ng-model="formData.nama_depan" name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama depan"/>
+                    </section>
+                    <section class="item">
+                        <input ng-model="formData.nama_belakang" name="nama_belakang" type="text" class="text-input--underbar" placeholder="Nama belakang"/>
+                    </section>
+                    <section class="item">
+                        <input ng-model="formData.alamat" name="alamat" type="text" class="text-input--underbar" placeholder="Alamat"/>
+                    </section>
+                    <section class="item">
+                        <br><br>
+                        <ons-button var="tambah_anggota_button" modifier="medium" ng-click="kirim()">Daftar</ons-button>
+                    </section>
+                    <input ng-model="formData.parent_email" name="parent_email" type="hidden"/>
+                    <input type="submit" style="display:none"/>
+                </form>
             </ons-scroller>
         </ons-page>
     </ons-template>

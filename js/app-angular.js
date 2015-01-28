@@ -48,7 +48,43 @@ module.controller('dashboardcontroller', ['$scope', 'numberService', function ($
         }
     }]);
 module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
-        $scope.parent_email=localStorage['credential_email'];
+        $scope.defaultFormData = {
+            "parent_email": localStorage['credential_email'],
+            "email": "",
+            "password": "",
+            "repeat_password": "",
+            "nama_depan": "",
+            "nama_belakang": "",
+            "alamat": "",
+        };
+
+        $scope.kirim = function () {
+            $.ajax({
+                type: "POST",
+                url: service_url + "anggotas.json",
+                data: $scope.formData,
+                dataType: "json",
+                success: function (data) {
+                    if (data.response.status == 101) {
+                        errorHandle(data.response.data.errors);
+                    } else if (data.response.status == 200) {
+                        alert("Penambahan berhasil");
+                        $scope.$apply(function () {
+                            $scope.reset();
+                        })
+                    }
+                },
+                error: function () {
+                    alert('Tidak dapat mencapai server');
+                }
+            });
+        }
+        
+        $scope.reset=function(){
+            $scope.formData=angular.copy($scope.defaultFormData);
+        }
+        
+        $scope.reset();
     }]);
 
 ons.ready(function () {
