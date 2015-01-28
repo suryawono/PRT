@@ -25,9 +25,6 @@
 
         <script>
             var module = angular.module('app', ['onsen']);
-            ons.ready(function () {
-                menu.setSwipeable(false);
-            })
         </script>
         <script src="js/app-angular.js"></script>
         <style>
@@ -162,7 +159,7 @@
                                                     Help
                                                 </ons-list-item>-->
 
-                <ons-list-item class="bottom-menu-item" onclick="setMainMenu('tambahAnggota.html')">
+                <ons-list-item class="bottom-menu-item" onclick="setMainPage('tambahAnggota.html')">
                     Tambah anggota
                 </ons-list-item>
                 <ons-list-item class="bottom-menu-item" onclick="logout()">
@@ -326,6 +323,7 @@
             </div>
         </ons-page>
     </ons-template>
+
     <ons-template id="tambahAnggota.html">
         <ons-page>
             <ons-toolbar>

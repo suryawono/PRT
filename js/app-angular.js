@@ -12,3 +12,11 @@ module.controller('registercontroller', ['$scope', function ($scope) {
             register();
         }
     }]);
+
+ons.ready(function () {
+    menu.setSwipeable(false);
+    if (localStorage['credential_email']) {
+        menu.setMainPage("dashboard.html");
+        menu.setSwipeable(true);
+    }
+})

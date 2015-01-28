@@ -36,7 +36,7 @@ function login() {
 }
 
 function loginSuccess(email) {
-    localStorage['credential'] = {"email": email};
+    localStorage['credential_email'] = email;
     login_button.stopSpin();
     login_button.setDisabled(false);
     setMainPage("dashboard.html");
