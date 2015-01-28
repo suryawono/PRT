@@ -18,5 +18,7 @@ ons.ready(function () {
     if (localStorage['credential_email']) {
         menu.setMainPage("dashboard.html");
         menu.setSwipeable(true);
+    }else{
+        menu.setMainPage("login.html");
     }
 })
