@@ -117,7 +117,7 @@
                     </section>
                     <br><br>
                     <ons-button var="login_button" modifier="large" class="login-button" onclick="login()">Log In</ons-button>
-                    <input type="submit" style="display:none"/>
+                    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                     <br><br>
                     <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
                     <ons-button modifier="quiet" class="forgot-password" onclick="setMainPage('register.html')">Daftar</ons-button>
@@ -177,7 +177,7 @@
             <div class="content">
                 <form id="register" ng-submit="doRegister()" ng-controller="registercontroller">
                     <section class="item">
-                        <input name="email" type="text" class="text-input--underbar" placeholder="Email">
+                        <input name="email" type="email" class="text-input--underbar" placeholder="Email">
                     </section>
                     <section class="item">
                         <input name="password" type="password" class="text-input--underbar" placeholder="Kata sandi">
@@ -351,7 +351,7 @@
             <ons-scroller class='content-list text-center' >
                 <form ng-submit="kirim()">
                     <section class="item">
-                        <input ng-model="formData.email" name="email" type="text" class="text-input--underbar" placeholder="Email"/>
+                        <input ng-model="formData.email" name="email" type="email" class="text-input--underbar" placeholder="Email"/>
                     </section>
                     <section class="item">
                         <input ng-model="formData.password" name="password" type="password" class="text-input--underbar" placeholder="Kata sandi"/>
@@ -373,7 +373,7 @@
                         <ons-button var="tambah_anggota_button" modifier="medium" ng-click="kirim()">Daftar</ons-button>
                     </section>
                     <input ng-model="formData.parent_email" name="parent_email" type="hidden"/>
-                    <input type="submit" style="display:none"/>
+                    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                 </form>
             </ons-scroller>
         </ons-page>
