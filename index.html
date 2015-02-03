@@ -148,18 +148,27 @@
                     <ons-icon icon="fa-minus"></ons-icon>
                     Tambah Pengeluaran
                 </ons-list-item>
+                <ons-list-item class="menu-item" ng-click="menu.setMainPage('transfer.html', {closeMenu: true})">
+                    <ons-icon icon="fa-refresh"></ons-icon>
+                    Transfer
+                </ons-list-item>
 
                 <ons-list-item class="menu-item" ng-click="menu.setMainPage('laporan.html', {closeMenu: true})">
                     <ons-icon icon="fa-bar-chart"></ons-icon>
                     Laporan
+                </ons-list-item>
+
+                <ons-list-item class="menu-item" ng-click="menu.setMainPage('anggota.html', {closeMenu: true})">
+                    <ons-icon icon="fa-user"></ons-icon>
+                    Anggota
                 </ons-list-item>
             </ons-list>
 
             <br>
 
             <ons-list class="bottom-menu-list">
-                <ons-list-item class="bottom-menu-item" onclick="setMainPage('tambahAnggota.html')">
-                    Tambah anggota
+                <ons-list-item class="bottom-menu-item" onclick="setMainPage('kategori.html')">
+                    Kategori Transaksi
                 </ons-list-item>
                 <ons-list-item class="bottom-menu-item" onclick="logout()">
                     Logout
@@ -170,7 +179,7 @@
     <ons-template id="register.html">
         <ons-page on-device-backbutton="setMainPage('login.html')">
             <ons-toolbar>
-                <div class="left"><ons-back-button onclick="setMainPage('login.html')">Back</ons-back-button></div>
+                <div class="left"><ons-back-button onclick="setMainPage('login.html')"></ons-back-button></div>
                 <div class="center">Pendaftaran</div>
                 <div class="right"></div>
             </ons-toolbar>
@@ -247,7 +256,7 @@
                             <select name="kategori" class="text-input--underbar">
                                 <option value="empty">-- Pilih Kategori --</option>
                                 <option>Gaji</option>
-                                <option>dll</option>
+                                <option>Jualan</option>
                             </select>
                         </div>
                     </section>
@@ -292,8 +301,6 @@
                                 <option value="empty">-- Pilih Kategori --</option>
                                 <option>Makanan</option>
                                 <option>Minuman</option>
-                                <option>Bahan Bakar</option>
-                                <option>dll</option>
                             </select>
                         </div>
                     </section>
@@ -316,7 +323,7 @@
     </ons-template>
 
     <ons-template id="laporan.html">
-        <ons-page>
+        <ons-page ng-controller="laporancontroller" ng-init="rentangTahunan()">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
@@ -326,9 +333,37 @@
                 <div class="center">Laporan</div>
                 <div class="right"></div>
             </ons-toolbar>
-            <div>
+            <ons-scroller class="content-list text-center">
+                <section class="item">
+                    <select name="kategori" class="text-input--underbar" ng-options="jenis for jenis in jeniswaktu" ng-model="selectedJenis" ng-change="gantirentang()">
+                    </select>
+                </section>
+                <section class="item">
+                    <select name="kategori" class="text-input--underbar" ng-options="rentang for rentang in rentangwaktu" ng-model="selectedRentang">
+                    </select>
+                </section>
+                <section class="item">
+                    <br><br>
+                    <ons-button modifier="medium" ng-click="tampillaporan()">Tampilkan</ons-button>
+                </section>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
 
-            </div>
+    <ons-template id="laporanDetail.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-back-button onclick="setMainPage('laporan.html')">Back</ons-back-button>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Laporan</div>
+                <div class="right"></div>
+            </ons-toolbar>
+            <ons-scroller>
+
+            </ons-scroller>
         </ons-page>
     </ons-template>
 
@@ -336,9 +371,7 @@
         <ons-page ng-controller="tambahanggotacontroller">
             <ons-toolbar>
                 <div class="left">
-                    <ons-toolbar-button>
-                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
-                    </ons-toolbar-button>
+                    <ons-back-button onclick="setMainPage('anggota.html')"></ons-back-button>
                 </div>
                 <div class="center">Tambah Anggota</div>
                 <div class="right"></div>
@@ -374,5 +407,151 @@
         </ons-page>
     </ons-template>
 
+    <ons-template id="transfer.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Transfer Dana</div>
+                <div class="right"></div>
+            </ons-toolbar>
+            <ons-scroller class='content-list text-center' >
+                <form>
+                    <section class="item">
+                        <select name="transfer_tujuan" class="text-input--underbar">
+                            <option>-- Tujuan Transfer --</option>
+                            <option>Andreas</option>
+                            <option>Stella</option>
+                            <option>Melinda</option>
+                            <option>Muhamad</option>
+                        </select>
+                    </section>
+                    <section class="item">
+                        <input name="transfer_jumlah" type="text" class="text-input--underbar" placeholder="Jumlah transfer"/>
+                    </section>
+                    <section class="item">
+                        <br><br>
+                        <ons-button var="transfer_dana" modifier="medium" >Kirim</ons-button>
+                    </section>
+                </form>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="kategori.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Kategori Transaksi</div>
+                <div class="right">
+                    <ons-toolbar-button>
+                        <ons-icon icon="fa-plus" style="font-size: 26px; width: 1em" onclick="setMainPage('tambahKategori.html')">
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-scroller class='content-list text-center'>
+                <ons-list class="text-center">
+                    <ons-list-header class="text-center">Pemasukan</ons-list-header>
+                    <ons-list-item>Gaji</ons-list-item>
+                    <ons-list-item>Jualan</ons-list-item>
+                </ons-list>
+                <br/>
+                <br/>
+                <br/>
+                <ons-list class="text-center">
+                    <ons-list-header class="text-center">Pengeluaran</ons-list-header>
+                    <ons-list-item>Makanan</ons-list-item>
+                    <ons-list-item>Minuman</ons-list-item>
+                </ons-list>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="tambahKategori.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-back-button onclick="setMainPage('kategori.html')"></ons-back-button>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Tambah Kategori</div>
+                <div class="right"></div>
+            </ons-toolbar>
+            <ons-scroller class='content-list text-center' >
+                <form>
+                    <section class="item">
+                        <select name="tambah_kategori_jenis_kategori" class="text-input--underbar">
+                            <option>-- Jenis Kategori --</option>
+                            <option>Pemasukan</option>
+                            <option>Penjualan</option>
+                        </select>
+                    </section>
+                    <section class="item">
+                        <input name="tambah_kategori_nama" type="text" class="text-input--underbar" placeholder="Nambah Katagori"/>
+                    </section>
+                    <section class="item">
+                        <br><br>
+                        <ons-button var="tambah_kategori" modifier="medium" >Tambah</ons-button>
+                    </section>
+                </form>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="anggota.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em" ng-click="menu.toggleMenu()">
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Anggota</div>
+                <div class="right">
+                    <ons-toolbar-button>
+                        <ons-icon icon="fa-plus" style="font-size: 26px; width: 1em" onclick="setMainPage('tambahAnggota.html')">
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-scroller class='content-list'>
+                <ons-list>
+                    <ons-list-item class='list__item' modifier="tappable"><span class="list__right-label">Anak</span>Andreas</ons-list-item>
+                    <ons-list-item class='list__item' modifier="tappable"><span class="list__right-label">Anak</span>Stella</ons-list-item>
+                    <ons-list-item class='list__item' modifier="tappable"><span class="list__right-label">Istri</span>Melinda</ons-list-item>
+                    <ons-list-item class='list__item' modifier="tappable" onclick="setMainPage('editAnggota.html')"><span class="list__right-label">Saudara</span>Muhamad</ons-list-item>
+                </ons-list>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="editAnggota.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button>
+                        <ons-back-button onclick="setMainPage('anggota.html')"></ons-back-button>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">Muhamad</div>
+                <div class="right">
+                </div>
+            </ons-toolbar>
+            <ons-scroller class='content-list'>
+                <ons-list class="list">
+                    <ons-list-item class='list__item'><span class="list__right-label">10.000.000</span>Pemasukan</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label">2.500.000</span>Pengeluaran</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label green">7.500.000</span>Total</ons-list-item>
+                </ons-list>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
 </body>
 </html>

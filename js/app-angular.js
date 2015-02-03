@@ -7,6 +7,12 @@ module.factory('numberService', function () {
     }
 })
 
+module.filter('reverse', function () {
+    return function (items) {
+        return items.slice().reverse();
+    };
+});
+
 module.controller('logincontroller', ['$scope', function ($scope) {
         $scope.name = '';
         $scope.email = '';
@@ -79,12 +85,50 @@ module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
                 }
             });
         }
-        
-        $scope.reset=function(){
-            $scope.formData=angular.copy($scope.defaultFormData);
+
+        $scope.reset = function () {
+            $scope.formData = angular.copy($scope.defaultFormData);
+        }
+
+        $scope.reset();
+    }]);
+
+module.controller('laporancontroller', ['$scope', function ($scope) {
+        $scope.jeniswaktu = ['Tahunan', 'Bulanan', 'Mingguan', 'Harian'];
+        $scope.rentangwaktu = [];
+
+        $scope.gantirentang = function () {
+            switch ($scope.selectedJenis) {
+                case "Tahunan":
+                    $scope.rentangTahunan();
+                    break;
+                case "Bulanan":
+                    $scope.rentangBulanan();
+                    break;
+
+            }
+        }
+
+        $scope.rentangTahunan = function () {
+            var startyear = 2000;
+            var currentyear = new Date().getFullYear();
+            for (currentyear; currentyear >= startyear; currentyear--) {
+                $scope.rentangwaktu.push(currentyear);
+            }
+            $scope.selectedRentang = $scope.rentangwaktu[0];
+        }
+
+        $scope.rentangBulanan = function () {
+            $scope.rentangwaktu = ['Januari','Febuari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'];
+            $scope.selectedRentang = $scope.rentangwaktu[0];
         }
         
-        $scope.reset();
+        $scope.tampillaporan=function(){
+            setMainPage('laporanDetail.html')
+        }
+
+        $scope.selectedJenis = $scope.jeniswaktu[0];
+
     }]);
 
 ons.ready(function () {
