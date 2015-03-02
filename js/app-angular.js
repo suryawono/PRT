@@ -54,14 +54,16 @@ module.controller('dashboardcontroller', ['$scope', 'numberService', function ($
         }
     }]);
 module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
+        $scope.jenisanggota = jenis_anggota;
+        $scope.hubungananggota = hubungan_anggota;
         $scope.defaultFormData = {
-            "parent_email": localStorage['credential_email'],
+            "rumah_tangga_id": credential.rumah_tangga.id,
             "email": "",
             "password": "",
             "repeat_password": "",
-            "nama_depan": "",
-            "nama_belakang": "",
-            "alamat": "",
+            "nama": "",
+            "jenis_anggota_id": $scope.jenisanggota[0].id,
+            "hubungan_anggota_id": $scope.hubungananggota[0].id,
         };
 
         $scope.kirim = function () {
@@ -119,11 +121,11 @@ module.controller('laporancontroller', ['$scope', function ($scope) {
         }
 
         $scope.rentangBulanan = function () {
-            $scope.rentangwaktu = ['Januari','Febuari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November'];
+            $scope.rentangwaktu = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November'];
             $scope.selectedRentang = $scope.rentangwaktu[0];
         }
-        
-        $scope.tampillaporan=function(){
+
+        $scope.tampillaporan = function () {
             setMainPage('laporanDetail.html')
         }
 
@@ -131,11 +133,27 @@ module.controller('laporancontroller', ['$scope', function ($scope) {
 
     }]);
 
+module.controller('anggotacontroller', ['$scope', '$http', function ($scope, $http) {
+        $scope.anggotas = [];
+
+        $scope.init = function () {
+            $http.get(service_url + "rumah_tanggas/" + credential.rumah_tangga.id + ".json").success(function (root) {
+                $scope.anggotas = root.response.data.Anggota;
+            });
+        }
+
+        $scope.detail = function (id) {
+            menu.setMainPage("editAnggota.html");
+        }
+    }]);
+
 ons.ready(function () {
     menu.setSwipeable(false);
-    if (localStorage['credential_email']) {
-        menu.setMainPage("dashboard.html");
-        menu.setSwipeable(true);
+    if (localStorage['credential']) {
+        credential = JSON.parse(localStorage['credential']);
+        jenis_anggota = JSON.parse(localStorage['jenis_anggota']);
+        hubungan_anggota = JSON.parse(localStorage['hubungan_anggota']);
+        init();
     } else {
         menu.setMainPage("login.html");
     }

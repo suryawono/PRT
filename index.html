@@ -195,13 +195,7 @@
                         <input name="repeat_password" type="password" class="text-input--underbar" placeholder="Ulangi kata sandi">
                     </section>
                     <section class="item">
-                        <input name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama Depan">
-                    </section>
-                    <section class="item">
-                        <input name="nama_belakang" type="text" class="text-input--underbar"  placeholder="Nama Belakang">
-                    </section>
-                    <section class="item">
-                        <input name="alamat" type="text" class="text-input--underbar"  placeholder="Alamat">
+                        <input name="nama" type="text" class="text-input--underbar" placeholder="Nama Lengkap">
                     </section>
 
                     <section class="item">
@@ -210,7 +204,6 @@
                     </section>
                     <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                 </form>
-                </div>
             </ons-scroller>
     </ons-template>
     <ons-template id="dashboard.html"  >
@@ -255,8 +248,8 @@
                         <div>
                             <select name="kategori" class="text-input--underbar">
                                 <option value="empty">-- Pilih Kategori --</option>
-                                <option>Gaji</option>
-                                <option>Jualan</option>
+                                <option value="1">Gaji</option>
+                                <option value="2">Jualan</option>
                             </select>
                         </div>
                     </section>
@@ -299,8 +292,8 @@
                         <div>
                             <select name="kategori" class="text-input--underbar">
                                 <option value="empty">-- Pilih Kategori --</option>
-                                <option>Makanan</option>
-                                <option>Minuman</option>
+                                <option value="3">Makanan</option>
+                                <option value="4">Minuman</option>
                             </select>
                         </div>
                     </section>
@@ -379,6 +372,16 @@
             <ons-scroller class='content-list text-center' >
                 <form ng-submit="kirim()">
                     <section class="item">
+                        <select ng-model="formData.jenis_anggota_id" class="text-input--underbar">
+                            <option ng-repeat="jenis in jenisanggota" value="{{jenis.id}}">{{jenis.name}}</option>
+                        </select>
+                    </section>
+                    <section class="item">
+                        <select ng-model="formData.hubungan_anggota_id" class="text-input--underbar">
+                            <option ng-repeat="hubungan in hubungananggota" value="{{hubungan.id}}">{{hubungan.name}}</option>
+                        </select>
+                    </section>
+                    <section class="item">
                         <input ng-model="formData.email" name="email" type="email" class="text-input--underbar" placeholder="Email"/>
                     </section>
                     <section class="item">
@@ -388,19 +391,13 @@
                         <input ng-model="formData.repeat_password" name="repeat_password" type="password" class="text-input--underbar" placeholder="Ulangi kata sandi"/>
                     </section>
                     <section class="item">
-                        <input ng-model="formData.nama_depan" name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama depan"/>
-                    </section>
-                    <section class="item">
-                        <input ng-model="formData.nama_belakang" name="nama_belakang" type="text" class="text-input--underbar" placeholder="Nama belakang"/>
-                    </section>
-                    <section class="item">
-                        <input ng-model="formData.alamat" name="alamat" type="text" class="text-input--underbar" placeholder="Alamat"/>
+                        <input ng-model="formData.nama" name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama lengkap"/>
                     </section>
                     <section class="item">
                         <br><br>
                         <ons-button var="tambah_anggota_button" modifier="medium" ng-click="kirim()">Daftar</ons-button>
                     </section>
-                    <input ng-model="formData.parent_email" name="parent_email" type="hidden"/>
+                    <input ng-model="formData.rumah_tangga_id" name="rumah_tangga_id" type="hidden"/>
                     <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
                 </form>
             </ons-scroller>
@@ -507,7 +504,7 @@
     </ons-template>
 
     <ons-template id="anggota.html">
-        <ons-page>
+        <ons-page ng-controller="anggotacontroller" ng-init="init()">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
@@ -523,17 +520,14 @@
             </ons-toolbar>
             <ons-scroller class='content-list'>
                 <ons-list>
-                    <ons-list-item class='list__item' modifier="tappable"><span class="list__right-label">Anak</span>Andreas</ons-list-item>
-                    <ons-list-item class='list__item' modifier="tappable"><span class="list__right-label">Anak</span>Stella</ons-list-item>
-                    <ons-list-item class='list__item' modifier="tappable"><span class="list__right-label">Istri</span>Melinda</ons-list-item>
-                    <ons-list-item class='list__item' modifier="tappable" onclick="setMainPage('editAnggota.html')"><span class="list__right-label">Saudara</span>Muhamad</ons-list-item>
+                    <ons-list-item ng-repeat="anggota in anggotas" class='list__item' modifier="tappable" ng-click="detail(anggota.id)"><span class="list__right-label">{{anggota.HubunganAnggota.nama}}</span>{{anggota.nama}}</ons-list-item>
                 </ons-list>
             </ons-scroller>
         </ons-page>
     </ons-template>
 
     <ons-template id="editAnggota.html">
-        <ons-page>
+        <ons-page ng-controller="editanggotacontroller" ng-init="init()">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
@@ -550,6 +544,36 @@
                     <ons-list-item class='list__item'><span class="list__right-label">2.500.000</span>Pengeluaran</ons-list-item>
                     <ons-list-item class='list__item'><span class="list__right-label green">7.500.000</span>Total</ons-list-item>
                 </ons-list>
+            </ons-scroller>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="profilRumahTangga.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                </div>
+                <div class="center">Profil Rumah Tangga</div>
+                <div class="right">
+                </div>
+            </ons-toolbar>
+            <ons-scroller class='content-list text-center'>
+                <form id="profilRumahTangga">
+                    <section class="item">
+                        <input name="nama" type="text" class="text-input--underbar" placeholder="Nama Keluarga"/>
+                    </section>
+                    <section class="item">
+                        <input name="alamat" type="text" class="text-input--underbar" placeholder="Alamat"/>
+                    </section>
+                    <section class="item">
+                        <textarea name="deskripsi" class="textarea textarea--transpanret" placeholder="Deskripsi"></textarea>
+                    </section>
+                    <input type="hidden" value="1" name="setup_up"/>
+                    <section class="item">
+                        <br><br>
+                        <ons-button modifier="medium" onclick="simpanProfilRumahTangga()">Simpan</ons-button>
+                    </section>
+                </form>
             </ons-scroller>
         </ons-page>
     </ons-template>

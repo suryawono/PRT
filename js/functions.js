@@ -14,7 +14,7 @@ function login() {
         dataType: "json",
         success: function (data) {
             if (data.response.status == 202) {
-                loginSuccess(data.response.data.email);
+                loginSuccess(data.response.data);
             } else if (data.response.status == 402) {
                 alert("Email/kata sandi salah");
                 login_button.stopSpin();
@@ -34,12 +34,15 @@ function login() {
 
 }
 
-function loginSuccess(email) {
-    localStorage['credential_email'] = email;
+function loginSuccess(data) {
+    localStorage['credential'] = JSON.stringify(data);
     login_button.stopSpin();
     login_button.setDisabled(false);
-    setMainPage("dashboard.html");
-    menu.setSwipeable(true);
+    credential = data;
+    fetchStaticData();
+    fetchTransaksi(function () {
+        init();
+    })
 }
 
 function setMainPage(e) {
@@ -48,6 +51,10 @@ function setMainPage(e) {
 
 function logout() {
     localStorage.clear();
+    buku.clear();
+    hubungan_anggota = [];
+    jenis_anggota = [];
+    kategori = [];
     setMainPage("login.html");
     menu.setSwipeable(false);
 }
@@ -83,4 +90,107 @@ function errorHandle(errors) {
         alert(errors[x]);
         break;
     }
+}
+
+function dashboard() {
+    setMainPage("dashboard.html");
+    menu.setSwipeable(true);
+}
+
+function init() {
+    if (credential.rumah_tangga.setup_up == 0) {
+        setMainPage("profilRumahTangga.html");
+    } else {
+        dashboard();
+    }
+}
+
+function simpanProfilRumahTangga() {
+    var data = $("#profilRumahTangga").serializeArray();
+    $.ajax({
+        type: "POST",
+        url: service_url + "rumah_tanggas/" + credential.rumah_tangga.id + ".json",
+        data: data,
+        dataType: "json",
+        success: function () {
+            credential.rumah_tangga.setup_up = 1;
+            updateCredential();
+            alert("Tersimpan");
+            dashboard();
+        },
+        error: function () {
+            alert("Unable to connect to server.");
+        }
+    })
+}
+
+function updateCredential() {
+    localStorage['credential'] = JSON.stringify(credential);
+}
+
+function fetchTransaksi(callback) {
+    $.ajax({
+        type: "GET",
+        url: service_url + "anggotas/" + credential.anggota.id + ".json",
+        dataType: "JSON",
+        success: function (data) {
+            $.each(data.response.data.Transaksi, function (k, v) {
+                buku.add(new Record(v.besaran, v.deskripsi, new Date(v.waktu).getTime(), jenis_kategori[v.Kategori.jenis_kategori_id], v.kategori_id));
+            });
+            callback();
+        },
+        error: function () {
+            alert("Unable to connect to server.");
+        }
+    })
+}
+
+function sendTransaksi(transaksi) {
+    $.ajax({
+        type: "POST",
+        url: service_url + "transaksis.json",
+        data: transaksi,
+        dataType: "JSON",
+        success: function () {
+
+        },
+        error: function () {
+            //flagnotsave
+        }
+    })
+}
+
+function toSqlDatetime(timestamp) {
+    return new Date(timestamp).toISOString().slice(0, 19).replace('T', ' ');
+}
+
+function fetchStaticData() {
+    $.ajax({
+        type: "GET",
+        url: service_url + "jenis_anggotas.json",
+        dataType: "JSON",
+        success: function (data) {
+            $.each(data.response.data, function (k, v) {
+                jenis_anggota.push({id: v.JenisAnggota.id, name: v.JenisAnggota.nama});
+            });
+            localStorage['jenis_anggota'] = JSON.stringify(jenis_anggota);
+        },
+        error: function () {
+
+        }
+    })
+    $.ajax({
+        type: "GET",
+        url: service_url + "hubungan_anggotas.json",
+        dataType: "JSON",
+        success: function (data) {
+            $.each(data.response.data, function (k, v) {
+                hubungan_anggota.push({id: v.HubunganAnggota.id, name: v.HubunganAnggota.nama});
+            });
+            localStorage['hubungan_anggota'] = JSON.stringify(hubungan_anggota);
+        },
+        error: function () {
+
+        }
+    })
 }
