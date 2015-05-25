@@ -34,7 +34,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function () {
-        service_url = "http://192.168.56.1/prtservice/";
+        service_url = "http://192.168.137.1/prtservice/";
     },
 };
 app.initialize();
