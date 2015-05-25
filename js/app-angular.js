@@ -1,49 +1,19 @@
-module.factory('numberService', function () {
+reportingList = {
+    "Tahunan": 1,
+    "Bulanan": 2,
+    "Mingguan": 3,
+    "Harian": 4
+}
+
+currentReporting = -1;
+
+module.factory('numberService', function() {
     return{
-        formatAngka: function (angka) {
+        formatAngka: function(angka) {
             angka = angka.toString().replace(/\./g, "");
             return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-    }
-})
-
-module.filter('reverse', function () {
-    return function (items) {
-        return items.slice().reverse();
-    };
-});
-
-module.controller('logincontroller', ['$scope', function ($scope) {
-        $scope.name = '';
-        $scope.email = '';
-
-        $scope.doLogin = function () {
-            login();
-        }
-    }]);
-module.controller('registercontroller', ['$scope', function ($scope) {
-
-        $scope.doRegister = function () {
-            register();
-        }
-    }]);
-module.controller('dashboardcontroller', ['$scope', 'numberService', function ($scope, numberService) {
-        $scope.total_pemasukan = 0;
-        $scope.total_pengeluaran = 0;
-        $scope.total = 0;
-        $scope.numberService = numberService;
-
-        $scope.init = function () {
-            buku.viewTotal(function () {
-                $scope.$apply(function () {
-                    $scope.total_pemasukan = totalPemasukan;
-                    $scope.total_pengeluaran = totalPengeluaran;
-                    $scope.total = totalPemasukan - totalPengeluaran;
-                })
-            });
-        }
-
-        $scope.getColor = function (amount) {
+        },
+        getColor: function(amount) {
             if (amount > 0) {
                 return "green";
             } else if (amount < 0) {
@@ -51,9 +21,61 @@ module.controller('dashboardcontroller', ['$scope', 'numberService', function ($
             } else {
                 return "";
             }
+        },
+        getColorPemasukan: function(amount) {
+            if (amount > 0) {
+                return "green";
+            } else {
+                return "";
+            }
+        },
+        getColorPengeluaran: function(amount) {
+            if (amount > 0) {
+                return "red";
+            } else {
+                return "";
+            }
+        },
+    }
+})
+
+module.filter('reverse', function() {
+    return function(items) {
+        return items.slice().reverse();
+    };
+});
+
+module.controller('logincontroller', ['$scope', function($scope) {
+        $scope.name = '';
+        $scope.email = '';
+
+        $scope.doLogin = function() {
+            login();
         }
     }]);
-module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
+module.controller('registercontroller', ['$scope', function($scope) {
+
+        $scope.doRegister = function() {
+            register();
+        }
+    }]);
+module.controller('dashboardcontroller', ['$scope', 'numberService', function($scope, numberService) {
+        $scope.total_pemasukan = 0;
+        $scope.total_pengeluaran = 0;
+        $scope.total = 0;
+        $scope.numberService = numberService;
+
+        $scope.init = function() {
+            buku.viewTotal(function() {
+                $scope.$apply(function() {
+                    $scope.total_pemasukan = totalPemasukan;
+                    $scope.total_pengeluaran = totalPengeluaran;
+                    $scope.total = totalPemasukan - totalPengeluaran;
+                })
+            });
+        }
+    }]);
+module.controller('tambahanggotacontroller', ['$scope', function($scope) {
         $scope.jenisanggota = jenis_anggota;
         $scope.hubungananggota = hubungan_anggota;
         $scope.defaultFormData = {
@@ -66,40 +88,41 @@ module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
             "hubungan_anggota_id": $scope.hubungananggota[0].id,
         };
 
-        $scope.kirim = function () {
+        $scope.kirim = function() {
             $.ajax({
                 type: "POST",
                 url: service_url + "anggotas.json",
                 data: $scope.formData,
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     if (data.response.status == 101) {
                         errorHandle(data.response.data.errors);
                     } else if (data.response.status == 200) {
                         alert("Penambahan berhasil");
-                        $scope.$apply(function () {
+                        $scope.$apply(function() {
                             $scope.reset();
                         })
                     }
                 },
-                error: function () {
+                error: function() {
                     alert('Tidak dapat mencapai server');
                 }
             });
         }
 
-        $scope.reset = function () {
+        $scope.reset = function() {
             $scope.formData = angular.copy($scope.defaultFormData);
         }
 
         $scope.reset();
     }]);
 
-module.controller('laporancontroller', ['$scope', function ($scope) {
-        $scope.jeniswaktu = ['Tahunan', 'Bulanan', 'Mingguan', 'Harian'];
+module.controller('laporancontroller', ['$scope', function($scope) {
+        $scope.jeniswaktu = ['Bulanan', 'Mingguan', 'Harian'];
         $scope.rentangwaktu = [];
+        $scope.entity_laporan_list = [];
 
-        $scope.gantirentang = function () {
+        $scope.gantirentang = function() {
             switch ($scope.selectedJenis) {
                 case "Tahunan":
                     $scope.rentangTahunan();
@@ -107,11 +130,13 @@ module.controller('laporancontroller', ['$scope', function ($scope) {
                 case "Bulanan":
                     $scope.rentangBulanan();
                     break;
-
+                case "Mingguan":
+                    $scope.rentangMingguan();
+                    break;
             }
         }
 
-        $scope.rentangTahunan = function () {
+        $scope.rentangBulanan = function() {
             var startyear = 2000;
             var currentyear = new Date().getFullYear();
             for (currentyear; currentyear >= startyear; currentyear--) {
@@ -120,12 +145,13 @@ module.controller('laporancontroller', ['$scope', function ($scope) {
             $scope.selectedRentang = $scope.rentangwaktu[0];
         }
 
-        $scope.rentangBulanan = function () {
+        $scope.rentangMingguan = function() {
             $scope.rentangwaktu = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November'];
             $scope.selectedRentang = $scope.rentangwaktu[0];
         }
 
-        $scope.tampillaporan = function () {
+        $scope.tampillaporan = function() {
+            currentReporting = reportingList[$scope.selectedJenis];
             setMainPage('laporanDetail.html')
         }
 
@@ -133,21 +159,68 @@ module.controller('laporancontroller', ['$scope', function ($scope) {
 
     }]);
 
-module.controller('anggotacontroller', ['$scope', '$http', function ($scope, $http) {
+module.controller('anggotacontroller', ['$scope', '$http', function($scope, $http) {
         $scope.anggotas = [];
 
-        $scope.init = function () {
-            $http.get(service_url + "rumah_tanggas/" + credential.rumah_tangga.id + ".json").success(function (root) {
+        $scope.init = function() {
+            $http.get(service_url + "rumah_tanggas/" + credential.rumah_tangga.id + ".json").success(function(root) {
                 $scope.anggotas = root.response.data.Anggota;
             });
         }
 
-        $scope.detail = function (id) {
+        $scope.detail = function(id) {
             menu.setMainPage("editAnggota.html");
         }
     }]);
 
-ons.ready(function () {
+module.controller("laporandetailcontroller", ['$scope', '$http', 'numberService', function($scope, $http, numberService) {
+        $scope.bulanList = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November'];
+        $scope.judul_laporan = "Laporan";
+        $scope.numberService = numberService;
+
+        $scope.fetchLaporan = function() {
+            switch (currentReporting) {
+                case reportingList['Tahunan']:
+                    $scope.judul_laporan = "Laporan Tahunan";
+                    break;
+                case reportingList['Bulanan']:
+                    $scope.judul_laporan = "Laporan Bulanan";
+                    $http.get(service_url + "laporans.json?jenis=bulanan&anggota_id=" + credential.anggota.id + "&tahun=2015").success(function(root) {
+                        var entity_laporan_list = [];
+                        notEmpty = [];
+                        root.response.data.transaksi.forEach(function(e) {
+                            entity_laporan_list[parseInt(e[0].bulan)-1] = {
+                                nama: namaBulan[parseInt(e[0].bulan)],
+                                pemasukan: e[0].pemasukan,
+                                pengeluaran: e[0].pengeluaran,
+                            };
+                            notEmpty.push(parseInt(e[0].bulan)-1);
+                        })
+                        for (var i = 1; i <= 12; i++) {
+                            if (notEmpty.indexOf(i-1) == -1) {
+                                entity_laporan_list[i-1] = {
+                                    nama: namaBulan[i],
+                                    pemasukan: 0,
+                                    pengeluaran: 0,
+                                };
+                            }
+                        }
+                        $scope.entity_laporan_list = entity_laporan_list;
+                        console.log(entity_laporan_list);
+                        console.log($scope.entity_laporan_list);
+                    })
+                    break;
+                case reportingList['Mingguan']:
+                    $scope.judul_laporan = "Laporan Mingguan";
+                    break;
+                case reportingList['Harian']:
+                    $scope.judul_laporan = "Laporan Harian";
+                    break;
+            }
+        }
+    }]);
+
+ons.ready(function() {
     menu.setSwipeable(false);
     if (localStorage['credential']) {
         credential = JSON.parse(localStorage['credential']);
