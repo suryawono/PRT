@@ -152,6 +152,7 @@ module.controller('laporancontroller', ['$scope', function($scope) {
 
         $scope.tampillaporan = function() {
             currentReporting = reportingList[$scope.selectedJenis];
+            tahun_laporan=$scope.selectedRentang;
             setMainPage('laporanDetail.html')
         }
 
@@ -177,6 +178,8 @@ module.controller("laporandetailcontroller", ['$scope', '$http', 'numberService'
         $scope.bulanList = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November'];
         $scope.judul_laporan = "Laporan";
         $scope.numberService = numberService;
+        $scope.total_pemasukan = 0;
+        $scope.total_pengeluaran = 0;
 
         $scope.fetchLaporan = function() {
             switch (currentReporting) {
@@ -185,20 +188,24 @@ module.controller("laporandetailcontroller", ['$scope', '$http', 'numberService'
                     break;
                 case reportingList['Bulanan']:
                     $scope.judul_laporan = "Laporan Bulanan";
-                    $http.get(service_url + "laporans.json?jenis=bulanan&anggota_id=" + credential.anggota.id + "&tahun=2015").success(function(root) {
+                    $http.get(service_url + "laporans.json?jenis=bulanan&anggota_id=" + credential.anggota.id + "&tahun="+tahun_laporan).success(function(root) {
                         var entity_laporan_list = [];
+                        var total_pemasukan=0;
+                        var total_pengeluaran=0;
                         notEmpty = [];
                         root.response.data.transaksi.forEach(function(e) {
-                            entity_laporan_list[parseInt(e[0].bulan)-1] = {
+                            entity_laporan_list[parseInt(e[0].bulan) - 1] = {
                                 nama: namaBulan[parseInt(e[0].bulan)],
                                 pemasukan: e[0].pemasukan,
                                 pengeluaran: e[0].pengeluaran,
                             };
-                            notEmpty.push(parseInt(e[0].bulan)-1);
+                            total_pemasukan+=parseInt(e[0].pemasukan);
+                            total_pengeluaran+=parseInt(e[0].pengeluaran);
+                            notEmpty.push(parseInt(e[0].bulan) - 1);
                         })
                         for (var i = 1; i <= 12; i++) {
-                            if (notEmpty.indexOf(i-1) == -1) {
-                                entity_laporan_list[i-1] = {
+                            if (notEmpty.indexOf(i - 1) == -1) {
+                                entity_laporan_list[i - 1] = {
                                     nama: namaBulan[i],
                                     pemasukan: 0,
                                     pengeluaran: 0,
@@ -206,8 +213,8 @@ module.controller("laporandetailcontroller", ['$scope', '$http', 'numberService'
                             }
                         }
                         $scope.entity_laporan_list = entity_laporan_list;
-                        console.log(entity_laporan_list);
-                        console.log($scope.entity_laporan_list);
+                        $scope.total_pemasukan=total_pemasukan;
+                        $scope.total_pengeluaran=total_pengeluaran;
                     })
                     break;
                 case reportingList['Mingguan']:
