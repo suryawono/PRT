@@ -222,7 +222,7 @@
                 <ons-list class="list">
                     <ons-list-item class='list__item'><span class="list__right-label">{{numberService.formatAngka(total_pemasukan)}}</span>Pemasukan</ons-list-item>
                     <ons-list-item class='list__item'><span class="list__right-label">{{numberService.formatAngka(total_pengeluaran)}}</span>Pengeluaran</ons-list-item>
-                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="getColor(total)">{{numberService.formatAngka(total)}}</span>Total</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="numberService.getColor(total)">{{numberService.formatAngka(total)}}</span>Total</ons-list-item>
                 </ons-list>
             </ons-scroller>
         </ons-page>
@@ -316,7 +316,7 @@
     </ons-template>
 
     <ons-template id="laporan.html">
-        <ons-page ng-controller="laporancontroller" ng-init="rentangTahunan()">
+        <ons-page ng-controller="laporancontroller" ng-init="rentangBulanan()">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
@@ -344,18 +344,29 @@
     </ons-template>
 
     <ons-template id="laporanDetail.html">
-        <ons-page>
+        <ons-page ng-controller="laporandetailcontroller" ng-init="fetchLaporan()">
             <ons-toolbar>
                 <div class="left">
                     <ons-toolbar-button>
                         <ons-back-button onclick="setMainPage('laporan.html')">Back</ons-back-button>
                     </ons-toolbar-button>
                 </div>
-                <div class="center">Laporan</div>
+                <div class="center" ng-bind="judul_laporan"></div>
                 <div class="right"></div>
             </ons-toolbar>
-            <ons-scroller>
-
+            <ons-scroller class="content-list">
+                <ons-list class="" ng-repeat="entity_laporan in entity_laporan_list">
+                    <ons-list-header class="text-center">{{entity_laporan.nama}}</ons-list-header>
+                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="numberService.getColorPemasukan(entity_laporan.pemasukan)">{{numberService.formatAngka(entity_laporan.pemasukan)}}</span>Pemasukan</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="numberService.getColorPengeluaran(entity_laporan.pengeluaran)">{{numberService.formatAngka(entity_laporan.pengeluaran)}}</span>Pengeluaran</ons-list-item>
+                </ons-list>
+                <br/>
+                <br/>
+                <ons-list class="" >
+                    <ons-list-header class="text-center">Total</ons-list-header>
+                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="numberService.getColorPemasukan(total_pemasukan)">{{numberService.formatAngka(total_pemasukan)}}</span>Total Pemasukan</ons-list-item>
+                    <ons-list-item class='list__item'><span class="list__right-label" ng-class="numberService.getColorPengeluaran(total_pengeluaran)">{{numberService.formatAngka(total_pengeluaran)}}</span>Total Pengeluaran</ons-list-item>
+                </ons-list>
             </ons-scroller>
         </ons-page>
     </ons-template>
