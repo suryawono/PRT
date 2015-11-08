@@ -130,8 +130,9 @@ function updateCredential() {
 
 function fetchTransaksi(callback) {
     $.ajax({
-        type: "GET",
-        url: service_url + "anggotas/" + credential.anggota.id + ".json",
+        type: "POST",
+        url: service_url + "anggotas/get.json",
+        data:{id:credential.anggota.id},
         dataType: "JSON",
         success: function (data) {
             $.each(data.response.data.Transaksi, function (k, v) {
@@ -166,8 +167,8 @@ function toSqlDatetime(timestamp) {
 
 function fetchStaticData() {
     $.ajax({
-        type: "GET",
-        url: service_url + "jenis_anggotas.json",
+        type: "POST",
+        url: service_url + "jenis_anggotas/all.json",
         dataType: "JSON",
         success: function (data) {
             $.each(data.response.data, function (k, v) {
@@ -180,8 +181,8 @@ function fetchStaticData() {
         }
     })
     $.ajax({
-        type: "GET",
-        url: service_url + "hubungan_anggotas.json",
+        type: "POST",
+        url: service_url + "hubungan_anggotas/all.json",
         dataType: "JSON",
         success: function (data) {
             $.each(data.response.data, function (k, v) {

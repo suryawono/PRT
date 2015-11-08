@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var service_url = "http://localhost/prtservice/";
+var service_url = "http://localhost/ws/";
 var app = {
     // Application Constructor
     initialize: function () {
