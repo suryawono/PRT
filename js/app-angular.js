@@ -164,9 +164,6 @@ module.controller('anggotacontroller', ['$scope', '$http', function ($scope, $ht
         $scope.anggotas = [];
 
         $scope.init = function () {
-//            $http.post(service_url + "rumah_tanggas/get.json", "id=" + credential.rumah_tangga.id).success(function (root) {
-//                $scope.anggotas = root.response.data.Anggota;
-//            });
             $.ajax({
                 type: "POST",
                 url: service_url + "rumah_tanggas/get.json",
@@ -202,34 +199,46 @@ module.controller("laporandetailcontroller", ['$scope', '$http', 'numberService'
                     break;
                 case reportingList['Bulanan']:
                     $scope.judul_laporan = "Laporan Bulanan";
-                    $http.get(service_url + "laporans.json?jenis=bulanan&anggota_id=" + credential.anggota.id + "&tahun=" + tahun_laporan).success(function (root) {
-                        var entity_laporan_list = [];
-                        var total_pemasukan = 0;
-                        var total_pengeluaran = 0;
-                        notEmpty = [];
-                        root.response.data.transaksi.forEach(function (e) {
-                            entity_laporan_list[parseInt(e[0].bulan) - 1] = {
-                                nama: namaBulan[parseInt(e[0].bulan)],
-                                pemasukan: e[0].pemasukan,
-                                pengeluaran: e[0].pengeluaran,
-                            };
-                            total_pemasukan += parseInt(e[0].pemasukan);
-                            total_pengeluaran += parseInt(e[0].pengeluaran);
-                            notEmpty.push(parseInt(e[0].bulan) - 1);
-                        })
-                        for (var i = 1; i <= 12; i++) {
-                            if (notEmpty.indexOf(i - 1) == -1) {
-                                entity_laporan_list[i - 1] = {
-                                    nama: namaBulan[i],
-                                    pemasukan: 0,
-                                    pengeluaran: 0,
-                                };
-                            }
+                    $.ajax({
+                        type: "POST",
+                        url: service_url + "transaksis/laporan.json",
+                        data: {id: credential.anggota.id, jenis: "bulanan", tahun: tahun_laporan},
+                        dataType: "json",
+                        success: function (data) {
+                            var root = data;
+                            $scope.$apply(function () {
+                                var entity_laporan_list = [];
+                                var total_pemasukan = 0;
+                                var total_pengeluaran = 0;
+                                notEmpty = [];
+                                root.response.data.transaksi.forEach(function (e) {
+                                    entity_laporan_list[parseInt(e[0].bulan) - 1] = {
+                                        nama: namaBulan[parseInt(e[0].bulan)],
+                                        pemasukan: e[0].pemasukan,
+                                        pengeluaran: e[0].pengeluaran,
+                                    };
+                                    total_pemasukan += parseInt(e[0].pemasukan);
+                                    total_pengeluaran += parseInt(e[0].pengeluaran);
+                                    notEmpty.push(parseInt(e[0].bulan) - 1);
+                                })
+                                for (var i = 1; i <= 12; i++) {
+                                    if (notEmpty.indexOf(i - 1) == -1) {
+                                        entity_laporan_list[i - 1] = {
+                                            nama: namaBulan[i],
+                                            pemasukan: 0,
+                                            pengeluaran: 0,
+                                        };
+                                    }
+                                }
+                                $scope.entity_laporan_list = entity_laporan_list;
+                                $scope.total_pemasukan = total_pemasukan;
+                                $scope.total_pengeluaran = total_pengeluaran;
+                            });
+                        },
+                        error: function () {
+                            alert('Tidak dapat mencapai server');
                         }
-                        $scope.entity_laporan_list = entity_laporan_list;
-                        $scope.total_pemasukan = total_pemasukan;
-                        $scope.total_pengeluaran = total_pengeluaran;
-                    })
+                    });
                     break;
                 case reportingList['Mingguan']:
                     $scope.judul_laporan = "Laporan Mingguan";
