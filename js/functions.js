@@ -7,31 +7,31 @@ function login() {
     var data = $("#login").serialize();
     login_button.startSpin();
     login_button.setDisabled(true);
-    $.ajax({
-        type: "POST",
-        url: service_url + "anggotas/login.json",
-        data: data,
-        dataType: "json",
-        success: function (data) {
-            if (data.response.status == 202) {
-                loginSuccess(data.response.data);
-            } else if (data.response.status == 402) {
-                alert("Email/kata sandi salah");
-                login_button.stopSpin();
-                login_button.setDisabled(false);
-            } else {
-                alert(data.response.message);
-                login_button.stopSpin();
-                login_button.setDisabled(false);
-            }
-        },
-        error: function () {
-            login_button.stopSpin();
-            login_button.setDisabled(false);
-            alert('Tidak dapat mencapai server');
-        }
-    });
-
+//    $.ajax({
+//        type: "POST",
+//        url: service_url + "anggotas/login.json",
+//        data: data,
+//        dataType: "json",
+//        success: function (data) {
+//            if (data.response.status == 202) {
+//                loginSuccess(data.response.data);
+//            } else if (data.response.status == 402) {
+//                alert("Email/kata sandi salah");
+//                login_button.stopSpin();
+//                login_button.setDisabled(false);
+//            } else {
+//                alert(data.response.message);
+//                login_button.stopSpin();
+//                login_button.setDisabled(false);
+//            }
+//        },
+//        error: function () {
+//            login_button.stopSpin();
+//            login_button.setDisabled(false);
+//            alert('Tidak dapat mencapai server');
+//        }
+//    });
+    callGoogle();
 }
 
 function loginSuccess(data) {
