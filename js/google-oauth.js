@@ -1,3 +1,5 @@
+var accessToken;
+
 var googleapi = {
     authorize: function (options) {
         var deferred = $.Deferred();
@@ -59,8 +61,6 @@ var googleapi = {
         return deferred.promise();
     }
 };
-var accessToken;
-var UserData = null;
 
 function callGoogle()
 {
@@ -81,10 +81,10 @@ function callGoogle()
 
 }
 // This function gets data of user.
+var dataLogin=null;
 function getDataProfile()
 {
     var term = null;
-    //  alert("getting user data="+accessToken);
     $.ajax({
         url: 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken,
         type: 'GET',
@@ -100,6 +100,7 @@ function getDataProfile()
                 data: {accessToken: accessToken, gmailID: data.id, email: data.email, name: data.name, ppLink: data.picture, gender: data.gender},
                 dataType: {},
                 success: function (data) {
+                    dataLogin=data;
                     if (data.response.status == 202) {
                         loginSuccess(data.response.data);
                         console.log("login success");
@@ -110,7 +111,6 @@ function getDataProfile()
             })
         }
     });
-    disconnectUser();
 }
 function disconnectUser() {
     var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' + accessToken;
