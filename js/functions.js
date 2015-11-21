@@ -32,6 +32,8 @@ function login() {
 //        }
 //    });
     callGoogle();
+    login_button.stopSpin();
+    login_button.setDisabled(false);
 }
 
 function loginSuccess(data) {
@@ -132,7 +134,7 @@ function fetchTransaksi(callback) {
     $.ajax({
         type: "POST",
         url: service_url + "anggotas/get.json",
-        data:{id:credential.anggota.id},
+        data: {id: credential.anggota.id},
         dataType: "JSON",
         success: function (data) {
             $.each(data.response.data.Transaksi, function (k, v) {
