@@ -73,10 +73,7 @@ function callGoogle()
         scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email'
     }).done(function (data) {
         accessToken = data.access_token;
-        // alert(accessToken);
-        // $loginStatus.html('Access Token: ' + data.access_token);
-        console.log(data.access_token);
-        console.log(JSON.stringify(data));
+        refreshToken = data.refresh_token;
         getDataProfile();
 
 
@@ -108,6 +105,17 @@ function getDataProfile()
             localStorage.gmailLastName = data.family_name;
             localStorage.gmailProfilePicture = data.picture;
             localStorage.gmailGender = data.gender;
+            $.ajax({
+                url: service_url + "anggotas/login.json",
+                type: "POST",
+                data: {accessToken: accessToken, gmailID: data.id, email: data.email, name: data.name, ppLink: data.picture, gender: data.gender},
+                dataType: {},
+                success: function (data) {
+                    if (data.response.status == 202) {
+                        loginSuccess(data.response.data);
+                    }
+                },
+            })
         }
     });
     disconnectUser();
@@ -126,6 +134,7 @@ function disconnectUser() {
             // Do something now that user is disconnected
             // The response is always undefined.
             accessToken = null;
+            refreshToken = null;
             console.log(JSON.stringify(nullResponse));
             console.log("-----signed out..!!----" + accessToken);
         },

@@ -110,18 +110,12 @@
             <form id="login" ng-controller="logincontroller" ng-submit="doLogin()">
                 <div class="login-form">
                     <img src="img/icon-96.png"/>
-                    <section class="item">
-                        <input name="email" type="email" class="text-input--underbar" placeholder="Email" id="email" ng-model="name">
-                    </section>
-                    <section class="item">
-                        <input name="password" type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password" ng-model="email">
-                    </section>
-                    <br><br>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <ons-button var="login_button" modifier="large" class="login-button" onclick="login()">Log In</ons-button>
                     <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-                    <br><br>
-                    <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
-                    <ons-button modifier="quiet" class="forgot-password" onclick="setMainPage('register.html')">Daftar</ons-button>
                 </div>
             </form>
             <ons-modal var="modal_loading_login">
