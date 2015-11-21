@@ -98,7 +98,7 @@ function getDataProfile()
                 url: service_url + "anggotas/login.json",
                 type: "POST",
                 data: {accessToken: accessToken, gmailID: data.id, email: data.email, name: data.name, ppLink: data.picture, gender: data.gender},
-                dataType: {},
+                dataType: "JSON",
                 success: function (data) {
                     dataLogin=data;
                     if (data.response.status == 202) {
