@@ -94,17 +94,6 @@ function getDataProfile()
         },
         success: function (data)
         {
-            var item;
-
-            console.log(JSON.stringify(data));
-// Save the userprofile data in your localStorage.
-            localStorage.gmailLogin = "true";
-            localStorage.gmailID = data.id;
-            localStorage.gmailEmail = data.email;
-            localStorage.gmailFirstName = data.given_name;
-            localStorage.gmailLastName = data.family_name;
-            localStorage.gmailProfilePicture = data.picture;
-            localStorage.gmailGender = data.gender;
             $.ajax({
                 url: service_url + "anggotas/login.json",
                 type: "POST",
@@ -113,6 +102,9 @@ function getDataProfile()
                 success: function (data) {
                     if (data.response.status == 202) {
                         loginSuccess(data.response.data);
+                        console.log("login success");
+                    }else{
+                        console.log("login fail");
                     }
                 },
             })
