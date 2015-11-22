@@ -112,7 +112,7 @@ function simpanProfilRumahTangga() {
     $.ajax({
         type: "POST",
         url: service_url + "rumah_tanggas/edit.json",
-        data: data.concat({"id": credential.rumah_tangga.id}),
+        data: data.concat({name: "id", value: credential.rumah_tangga.id}),
         dataType: "json",
         success: function () {
             credential.rumah_tangga.setup_up = 1;
