@@ -111,7 +111,7 @@ function simpanProfilRumahTangga() {
     var data = $("#profilRumahTangga").serializeArray();
     $.ajax({
         type: "POST",
-        url: service_url + "rumah_tanggas/" + credential.rumah_tangga.id + ".json",
+        url: service_url + "rumah_tanggas/edit.json",
         data: data,
         dataType: "json",
         success: function () {

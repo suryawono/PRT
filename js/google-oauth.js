@@ -105,6 +105,7 @@ function getDataProfile()
                         loginSuccess(data.response.data);
                         console.log("login success");
                     }else{
+                        alert("Login gagal");
                         console.log("login fail");
                     }
                 },
