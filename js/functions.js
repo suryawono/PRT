@@ -44,7 +44,8 @@ function loginSuccess(data) {
     fetchStaticData();
     fetchTransaksi(function () {
         init();
-    })
+    });
+
 }
 
 function setMainPage(e) {
@@ -59,6 +60,7 @@ function logout() {
     kategori = [];
     setMainPage("login.html");
     menu.setSwipeable(false);
+    disconnectUser();
 }
 
 function register() {
@@ -97,6 +99,9 @@ function errorHandle(errors) {
 function dashboard() {
     setMainPage("dashboard.html");
     menu.setSwipeable(true);
+    $(".profile-image").attr("src", credential.anggota.pp_link);
+    $(".profile-name").html(credential.anggota.nama);
+    $(".profile-id").html(credential.jenis_anggota.nama);
 }
 
 function init() {
@@ -195,5 +200,24 @@ function fetchStaticData() {
         error: function () {
 
         }
+    })
+}
+
+function loginTest() {
+    $.ajax({
+        url: service_url + "anggotas/loginTest.json",
+        type: "POST",
+        data: {},
+        dataType: "JSON",
+        success: function (data) {
+            dataLogin = data;
+            if (data.response.status == 202) {
+                loginSuccess(data.response.data);
+                console.log("login success");
+            } else {
+                alert("Login gagal");
+                console.log("login fail");
+            }
+        },
     })
 }
