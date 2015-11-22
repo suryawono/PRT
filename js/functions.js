@@ -156,7 +156,7 @@ function fetchTransaksi(callback) {
 function sendTransaksi(transaksi) {
     $.ajax({
         type: "POST",
-        url: service_url + "transaksis.json",
+        url: service_url + "transaksis/add.json",
         data: transaksi,
         dataType: "JSON",
         success: function () {

@@ -81,7 +81,7 @@ function callGoogle()
 
 }
 // This function gets data of user.
-var dataLogin=null;
+var dataLogin = null;
 function getDataProfile()
 {
     var term = null;
@@ -100,11 +100,11 @@ function getDataProfile()
                 data: {accessToken: accessToken, gmailID: data.id, email: data.email, name: data.name, ppLink: data.picture, gender: data.gender},
                 dataType: "JSON",
                 success: function (data) {
-                    dataLogin=data;
+                    dataLogin = data;
                     if (data.response.status == 202) {
                         loginSuccess(data.response.data);
                         console.log("login success");
-                    }else{
+                    } else {
                         alert("Login gagal");
                         console.log("login fail");
                     }
@@ -126,10 +126,11 @@ function disconnectUser() {
         success: function (nullResponse) {
             // Do something now that user is disconnected
             // The response is always undefined.
-            accessToken = null;
-            refreshToken = null;
             console.log(JSON.stringify(nullResponse));
             console.log("-----signed out..!!----" + accessToken);
+            accessToken = null;
+            refreshToken = null;
+
         },
         error: function (e) {
             // Handle the error
