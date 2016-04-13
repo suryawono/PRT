@@ -22,6 +22,7 @@
         <script src="js/db.js"></script>
         <script src="js/model.js"></script>
         <script src="js/controller.js"></script>
+        <script src="js/google-oauth.js"></script>
 
         <script>
             var module = angular.module('app', ['onsen']);
@@ -109,18 +110,12 @@
             <form id="login" ng-controller="logincontroller" ng-submit="doLogin()">
                 <div class="login-form">
                     <img src="img/icon-96.png"/>
-                    <section class="item">
-                        <input name="email" type="email" class="text-input--underbar" placeholder="Email" id="email" ng-model="name">
-                    </section>
-                    <section class="item">
-                        <input name="password" type="password" class="text-input--underbar" placeholder="Kata Sandi" id="password" ng-model="email">
-                    </section>
-                    <br><br>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <ons-button var="login_button" modifier="large" class="login-button" onclick="login()">Log In</ons-button>
                     <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-                    <br><br>
-                    <ons-button modifier="quiet" class="forgot-password">Lupa kata sandi?</ons-button>
-                    <ons-button modifier="quiet" class="forgot-password" onclick="setMainPage('register.html')">Daftar</ons-button>
                 </div>
             </form>
             <ons-modal var="modal_loading_login">
@@ -132,7 +127,11 @@
     <ons-template id="menu.html">
         <ons-page modifier="menu-page">
             <ons-toolbar modifier="transparent"></ons-toolbar>
-
+            <div class="profile-card">
+                <img src="" class="profile-image" alt="">
+                <div class="profile-name">Surya Wono</div>
+                <div class="profile-id">Kepala Rumah Tangga</div>
+            </div>
             <ons-list class="menu-list">
                 <ons-list-item class="menu-item" ng-click="menu.setMainPage('dashboard.html', {closeMenu: true})">
                     <ons-icon icon="fa-home"></ons-icon>
@@ -394,15 +393,6 @@
                     </section>
                     <section class="item">
                         <input ng-model="formData.email" name="email" type="email" class="text-input--underbar" placeholder="Email"/>
-                    </section>
-                    <section class="item">
-                        <input ng-model="formData.password" name="password" type="password" class="text-input--underbar" placeholder="Kata sandi"/>
-                    </section>
-                    <section class="item">
-                        <input ng-model="formData.repeat_password" name="repeat_password" type="password" class="text-input--underbar" placeholder="Ulangi kata sandi"/>
-                    </section>
-                    <section class="item">
-                        <input ng-model="formData.nama" name="nama_depan" type="text" class="text-input--underbar" placeholder="Nama lengkap"/>
                     </section>
                     <section class="item">
                         <br><br>

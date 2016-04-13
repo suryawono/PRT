@@ -7,31 +7,33 @@ function login() {
     var data = $("#login").serialize();
     login_button.startSpin();
     login_button.setDisabled(true);
-    $.ajax({
-        type: "POST",
-        url: service_url + "anggotas/login.json",
-        data: data,
-        dataType: "json",
-        success: function (data) {
-            if (data.response.status == 202) {
-                loginSuccess(data.response.data);
-            } else if (data.response.status == 402) {
-                alert("Email/kata sandi salah");
-                login_button.stopSpin();
-                login_button.setDisabled(false);
-            } else {
-                alert(data.response.message);
-                login_button.stopSpin();
-                login_button.setDisabled(false);
-            }
-        },
-        error: function () {
-            login_button.stopSpin();
-            login_button.setDisabled(false);
-            alert('Tidak dapat mencapai server');
-        }
-    });
-
+//    $.ajax({
+//        type: "POST",
+//        url: service_url + "anggotas/login.json",
+//        data: data,
+//        dataType: "json",
+//        success: function (data) {
+//            if (data.response.status == 202) {
+//                loginSuccess(data.response.data);
+//            } else if (data.response.status == 402) {
+//                alert("Email/kata sandi salah");
+//                login_button.stopSpin();
+//                login_button.setDisabled(false);
+//            } else {
+//                alert(data.response.message);
+//                login_button.stopSpin();
+//                login_button.setDisabled(false);
+//            }
+//        },
+//        error: function () {
+//            login_button.stopSpin();
+//            login_button.setDisabled(false);
+//            alert('Tidak dapat mencapai server');
+//        }
+//    });
+    callGoogle();
+    login_button.stopSpin();
+    login_button.setDisabled(false);
 }
 
 function loginSuccess(data) {
@@ -42,7 +44,8 @@ function loginSuccess(data) {
     fetchStaticData();
     fetchTransaksi(function () {
         init();
-    })
+    });
+
 }
 
 function setMainPage(e) {
@@ -57,6 +60,7 @@ function logout() {
     kategori = [];
     setMainPage("login.html");
     menu.setSwipeable(false);
+    disconnectUser();
 }
 
 function register() {
@@ -95,6 +99,9 @@ function errorHandle(errors) {
 function dashboard() {
     setMainPage("dashboard.html");
     menu.setSwipeable(true);
+    $(".profile-image").attr("src", credential.anggota.pp_link);
+    $(".profile-name").html(credential.anggota.nama);
+    $(".profile-id").html(credential.jenis_anggota.nama);
 }
 
 function init() {
@@ -109,8 +116,8 @@ function simpanProfilRumahTangga() {
     var data = $("#profilRumahTangga").serializeArray();
     $.ajax({
         type: "POST",
-        url: service_url + "rumah_tanggas/" + credential.rumah_tangga.id + ".json",
-        data: data,
+        url: service_url + "rumah_tanggas/edit.json",
+        data: data.concat({name: "id", value: credential.rumah_tangga.id}),
         dataType: "json",
         success: function () {
             credential.rumah_tangga.setup_up = 1;
@@ -132,7 +139,7 @@ function fetchTransaksi(callback) {
     $.ajax({
         type: "POST",
         url: service_url + "anggotas/get.json",
-        data:{id:credential.anggota.id},
+        data: {id: credential.anggota.id},
         dataType: "JSON",
         success: function (data) {
             $.each(data.response.data.Transaksi, function (k, v) {
@@ -149,7 +156,7 @@ function fetchTransaksi(callback) {
 function sendTransaksi(transaksi) {
     $.ajax({
         type: "POST",
-        url: service_url + "transaksis.json",
+        url: service_url + "transaksis/add.json",
         data: transaksi,
         dataType: "JSON",
         success: function () {
@@ -193,5 +200,24 @@ function fetchStaticData() {
         error: function () {
 
         }
+    })
+}
+
+function loginTest() {
+    $.ajax({
+        url: service_url + "anggotas/loginTest.json",
+        type: "POST",
+        data: {},
+        dataType: "JSON",
+        success: function (data) {
+            dataLogin = data;
+            if (data.response.status == 202) {
+                loginSuccess(data.response.data);
+                console.log("login success");
+            } else {
+                alert("Login gagal");
+                console.log("login fail");
+            }
+        },
     })
 }

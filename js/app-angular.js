@@ -81,9 +81,6 @@ module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
         $scope.defaultFormData = {
             "rumah_tangga_id": credential.rumah_tangga.id,
             "email": "",
-            "password": "",
-            "repeat_password": "",
-            "nama": "",
             "jenis_anggota_id": $scope.jenisanggota[0].id,
             "hubungan_anggota_id": $scope.hubungananggota[0].id,
         };
@@ -91,7 +88,7 @@ module.controller('tambahanggotacontroller', ['$scope', function ($scope) {
         $scope.kirim = function () {
             $.ajax({
                 type: "POST",
-                url: service_url + "anggotas.json",
+                url: service_url + "anggotas/add.json",
                 data: $scope.formData,
                 dataType: "json",
                 success: function (data) {
